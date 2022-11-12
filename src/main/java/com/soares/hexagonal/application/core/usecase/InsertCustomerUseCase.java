@@ -1,10 +1,11 @@
 package com.soares.hexagonal.application.core.usecase;
 
 import com.soares.hexagonal.application.core.domain.Customer;
+import com.soares.hexagonal.application.ports.in.InsertCustomerInputPort;
 import com.soares.hexagonal.application.ports.out.FindAddressByZipCodeOutputPort;
 import com.soares.hexagonal.application.ports.out.InsertCustomerOutputPort;
 
-public class InsertCustomerUseCase {
+public class InsertCustomerUseCase implements InsertCustomerInputPort {
 
     private final FindAddressByZipCodeOutputPort findAddressByZipCodeOutputPort;
 
@@ -16,6 +17,7 @@ public class InsertCustomerUseCase {
         this.insertCustomerOutputPort = insertCustomerOutputPort;
     }
 
+    @Override
     public void insert(Customer customer, String zipCode) {
         var address = findAddressByZipCodeOutputPort.find(zipCode);
         customer.setAddress(address);
