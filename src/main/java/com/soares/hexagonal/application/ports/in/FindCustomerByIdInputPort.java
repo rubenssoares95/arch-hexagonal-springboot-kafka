@@ -4,8 +4,8 @@ import com.soares.hexagonal.application.core.domain.Customer;
 import org.springframework.stereotype.Component;
 
 @Component
-public interface InsertCustomerInputPort {
+public interface FindCustomerByIdInputPort {
 
-    void insert(Customer customer, String zipCode);
+    Customer find(String id);
 
 }
