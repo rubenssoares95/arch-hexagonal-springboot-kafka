@@ -3,11 +3,13 @@ package com.soares.hexagonal.adapters.in.controller;
 import com.soares.hexagonal.adapters.in.controller.mapper.CustomerMapper;
 import com.soares.hexagonal.adapters.in.controller.request.CustomerRequest;
 import com.soares.hexagonal.adapters.in.controller.response.CustomerResponse;
+import com.soares.hexagonal.application.ports.in.DeleteCustomerByIdInputPort;
 import com.soares.hexagonal.application.ports.in.FindCustomerByIdInputPort;
 import com.soares.hexagonal.application.ports.in.InsertCustomerInputPort;
 import com.soares.hexagonal.application.ports.in.UpdateCustomerInputPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +34,9 @@ public class CustomerController {
     private UpdateCustomerInputPort updateCustomerInputPort;
 
     @Autowired
+    private DeleteCustomerByIdInputPort deleteCustomerByIdInputPort;
+
+    @Autowired
     private CustomerMapper customerMapper;
 
     @PostMapping
@@ -52,6 +57,12 @@ public class CustomerController {
         var customer = customerMapper.toCustomer(customerRequest);
         customer.setId(id);
         updateCustomerInputPort.update(customer, customerRequest.getZipCode());
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable final String id) {
+        deleteCustomerByIdInputPort.delete(id);
         return ResponseEntity.noContent().build();
     }
 
